@@ -1,9 +1,6 @@
-from datetime import datetime
-
 from sqlalchemy.orm import Session
 
-from app.workout import models
-from app.workout.schema import WorkoutCreateModel
+from app import models
 
 
 def get_workouts(db: Session, page: int):

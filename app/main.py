@@ -1,11 +1,7 @@
 from fastapi import FastAPI
 
-from app import workout
-from app.database import engine
-from app.workout.router import workout_router
+from app.api.api import api_router
 
 app = FastAPI(title="GYM-API")
 
-
-app.include_router(workout_router)
-workout.models.Base.metadata.create_all(bind=engine)
+app.include_router(api_router)
