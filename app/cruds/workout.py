@@ -1,5 +1,5 @@
 from app import schemas, models
-from app.db.session import SessionContext
+from app.db.config import SessionContext
 
 
 def get_workouts(page: int):
@@ -13,12 +13,9 @@ def get_workout(_id: int):
 
 
 def create_workout(workout_in: schemas.WorkoutCreateModel):
-    new_model = models.Workout(
+    instance = models.Workout(
         name=workout_in.name,
         description=workout_in.description,
     )
-    with SessionContext() as session:
-        session.add(new_model)
-        session.commit()
-        session.refresh(new_model)
-        return new_model
+    instance.save()
+    return instance

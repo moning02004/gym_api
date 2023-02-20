@@ -1,8 +1,8 @@
 import bcrypt
-from sqlalchemy import Column, String, DateTime, Date, ForeignKey, Integer
+from sqlalchemy import Column, String, Date, ForeignKey, Integer, DateTime
 from sqlalchemy.orm import relationship
 
-from app.db.base import Model
+from app.models.base import Model
 
 
 class User(Model):
@@ -16,12 +16,9 @@ class User(Model):
 
     profile = relationship("Profile", back_populates="user", uselist=False)
 
-    def encrypt_password(self):
-        salt = bcrypt.gensalt()
-        return bcrypt.hashpw(self.password.encode(), salt)
-
-    def check_password(self, password):
-        return bcrypt.checkpw(self.password.encode(), password)
+    def save(self):
+        self.password = bcrypt.hashpw(self.password.encode(), bcrypt.gensalt())
+        return super().save()
 
 
 class Profile(Model):

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-from app.db.base import Model
+from app.models.base import Model
 
 
 class Part(Model):
@@ -17,7 +17,7 @@ class Workout(Model):
     name = Column(String)
     description = Column(String)
 
-    parts = relationship("Part", back_populates="workouts")
+    parts = relationship("Part", secondary="workout_part", back_populates="workouts")
 
 
 class PartWorkout(Model):
