@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: db_fastapi
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=gym
+      - POSTGRES_PASSWORD=gym1234!
+      - POSTGRES_DB=gym
+    ports:
+      - "5432:5432"

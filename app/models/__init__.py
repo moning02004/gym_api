@@ -1,2 +1,2 @@
-from .user import User
-from .workout import Workout, Part, workout_part
+from .user import User, Profile
+from .workout import Workout, PartWorkout, Part

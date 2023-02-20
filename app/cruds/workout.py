@@ -1,18 +1,24 @@
-from sqlalchemy.orm import Session
-
-from app import models
-
-
-def get_workouts(db: Session, page: int):
-    return db.query(models.Workout).offset((page - 1) * 10).limit(page * 10).all()
+from app import schemas, models
+from app.db.session import SessionContext
 
 
-def get_workout(db: Session, _id: int):
-    return db.query(models.Workout).filter(models.Workout.id == _id).first()
+def get_workouts(page: int):
+    with SessionContext() as session:
+        return session.query(models.Workout).offset((page - 1) * 10).limit(page * 10).all()
 
 
-def create_workout(db: Session, new_model: models.Workout):
-    db.add(new_model)
-    db.commit()
-    db.refresh(new_model)
-    return new_model
+def get_workout(_id: int):
+    with SessionContext() as session:
+        return session.query(models.Workout).filter(models.Workout.id == _id).first()
+
+
+def create_workout(workout_in: schemas.WorkoutCreateModel):
+    new_model = models.Workout(
+        name=workout_in.name,
+        description=workout_in.description,
+    )
+    with SessionContext() as session:
+        session.add(new_model)
+        session.commit()
+        session.refresh(new_model)
+        return new_model
